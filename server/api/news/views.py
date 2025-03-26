@@ -1,12 +1,12 @@
-from rest_framework.request import Request
-from rest_framework.response import Response
-from rest_framework.views import APIView, status
+from rest_framework import viewsets
+from .models import NewsModel
+from .serializers import NewsSerializer
 
 
-class NewsView(APIView):
-    def get(self, request: Request) -> Response:
-        return Response(
-            { "message": "OK" },
-            status.HTTP_200_OK
-        )
+class NewsViewSet(viewsets.ModelViewSet):
+    queryset = NewsModel.objects.all().order_by('-published_at')
+    serializer_class = NewsSerializer
+    
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
 
