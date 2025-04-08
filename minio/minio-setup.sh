@@ -1,8 +1,18 @@
 #!/bin/sh
-set -e
+set -ex
 
-until (/usr/bin/mc config host add minio http://minio:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD}) do echo 'Waiting for MinIO...' && sleep 1; done
+echo "Ожидание MinIO..."
+while ! curl -s -o /dev/null http://localhost:9000/minio/health/live; do
+  sleep 1
+done
 
-# Устанавливаем публичный доступ к бакету
-/usr/bin/mc anonymous set public minio/news-media
+echo "Настройка клиента..."
+/usr/bin/mc alias set local http://localhost:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD} --api S3v4
 
+echo "Создание бакета..."
+/usr/bin/mc mb local/news-media || true  # игнорируем ошибку если бакет уже существует
+
+echo "Настройка прав доступа..."
+/usr/bin/mc policy set public local/news-media
+
+echo "MinIO инициализирован"

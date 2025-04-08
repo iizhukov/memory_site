@@ -1,4 +1,5 @@
 asgiref==3.8.1
+attrs==25.3.0
 boto3==1.37.20
 botocore==1.37.20
 Django==5.1.7
@@ -7,10 +8,19 @@ django-cors-headers==4.7.0
 django-js-asset==3.1.2
 django-storages==1.14.5
 djangorestframework==3.15.2
+drf-spectacular==0.28.0
+inflection==0.5.1
 jmespath==1.0.1
+jsonschema==4.23.0
+jsonschema-specifications==2024.10.1
+psycopg2-binary==2.9.10
 python-dateutil==2.9.0.post0
 python-dotenv==1.1.0
+PyYAML==6.0.2
+referencing==0.36.2
+rpds-py==0.24.0
 s3transfer==0.11.4
 six==1.17.0
 sqlparse==0.5.3
+uritemplate==4.1.1
 urllib3==2.3.0
