@@ -11,7 +11,7 @@ class ReplaceMinioMiddleware:
             content = response.content.decode('utf-8')
             content = re.sub(
                 r'http://minio:9000', 
-                'http://127.0.0.1:9000', 
+                'http://81.31.247.179:9000', 
                 content
             )
             response.content = content.encode('utf-8')
