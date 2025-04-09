@@ -1,10 +1,12 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import NewsViewSet
+from . import views
 
 
 router = DefaultRouter()
-router.register(r'news', NewsViewSet)
+router.register(r'groups', views.CategoryGroupViewSet, basename='categorygroup')
+router.register(r'groups/(?P<group_id>\d+)/categories', views.CategoryViewSet, basename='category')
+router.register(r'news', views.NewsViewSet, basename='news')
 
 urlpatterns = [
     path('', include(router.urls)),

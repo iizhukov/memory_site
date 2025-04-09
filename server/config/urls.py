@@ -18,16 +18,14 @@ from django.contrib import admin
 from django.conf import settings
 from django.urls import path, include
 from django.conf.urls.static import static
-from django.contrib.admin.views.decorators import staff_member_required
-from ckeditor_uploader import views as ckeditor_views
+from django_ckeditor_5 import views as ckeditor5_views
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
 
-    path('ckeditor/upload/', staff_member_required(ckeditor_views.upload)),
-    path('ckeditor/browse/', staff_member_required(ckeditor_views.browse)),
+    path('ckeditor5/upload/', ckeditor5_views.upload_file, name='ck_editor_5_upload_file'),
 ]
 
 if settings.DEBUG:

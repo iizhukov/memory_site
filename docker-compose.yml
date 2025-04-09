@@ -56,6 +56,5 @@ services:
 
 volumes:
   minio_data:
-    driver: local
   postgres_data:
 

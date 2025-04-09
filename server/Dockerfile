@@ -24,6 +24,15 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 COPY . .
 
+RUN if [ -f ".env.docker" ]; then \
+        cp .env.docker .env; \
+    elif [ -f ".env.prod" ]; then \
+        cp .env.prod .env; \
+    else \
+        echo "Neither .env.docker nor .env.prod found!" >&2; \
+        exit 1; \
+    fi
+
 ENV PYTHONUNBUFFERED=1 \
     DJANGO_SETTINGS_MODULE=config.settings
 

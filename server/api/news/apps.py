@@ -8,4 +8,5 @@ class NewsConfig(AppConfig):
         return 'django.db.models.BigAutoField'
 
     name = 'api.news'
+    verbose_name = "Новости"
 
