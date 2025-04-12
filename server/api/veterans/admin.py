@@ -5,12 +5,14 @@ from django.utils.html import format_html
 from django_ckeditor_5.widgets import CKEditor5Widget
 from api.veterans import models
 
+
 class NoteAdminForm(forms.ModelForm):
-    text = forms.CharField(widget=CKEditor5Widget())
+    text = forms.CharField(label="Текст записки", widget=CKEditor5Widget())
 
     class Meta:
         model = models.NoteModel
         fields = '__all__'
+
 
 @admin.register(models.NoteModel)
 class NoteAdmin(admin.ModelAdmin):
@@ -71,7 +73,7 @@ class VeteranAdmin(admin.ModelAdmin):
 
     def display_image(self, obj):
         if obj.image:
-            return format_html('<img src="{}" width="50" height="50" />', obj.image.url)
+            return format_html('<img src="{}" height="200" />', obj.image.url)
         return "-"
  
-    display_image.short_description = 'Изображение' # type: ignore
+    display_image.short_description = 'Фото' # type: ignore

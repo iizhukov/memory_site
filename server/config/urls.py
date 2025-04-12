@@ -21,6 +21,11 @@ from django.conf.urls.static import static
 from django_ckeditor_5 import views as ckeditor5_views
 
 
+admin.site.site_header = 'Администрирование Сайта Ветеранов'
+admin.site.site_title = 'Администрирование Сайта Ветеранов'
+admin.site.index_title = 'Администрирование Сайта Ветеранов'
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),

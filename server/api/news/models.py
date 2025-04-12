@@ -17,7 +17,7 @@ class GroupModel(models.Model):
         validators=[MinLengthValidator(2)]
     )
     image = models.ImageField(
-        "Изображение",
+        "Загрузить изображение",
         upload_to='groups/',
         storage=MediaStorage(),
     )
@@ -55,16 +55,16 @@ class GroupModel(models.Model):
 class CategoryModel(models.Model):
     group = models.ForeignKey(
         GroupModel, on_delete=models.CASCADE,
-        related_name='categories'
+        related_name='categories', verbose_name="Группа"
     )
 
     name = models.CharField(
-        max_length=255,
+        "Имя", max_length=255,
         validators=[MinLengthValidator(2)]
     )
 
     image = models.ImageField(
-        "Изображение",
+        "Загрузить изображение",
         upload_to='categories/',
         storage=MediaStorage(),
     )
@@ -92,6 +92,9 @@ class CategoryModel(models.Model):
         verbose_name_plural = "Категории"
         unique_together = ('group', 'name')
 
+    def __str__(self) -> str:
+        return str(self.name)
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(f"{self.group.name}-{self.name}")
@@ -105,18 +108,19 @@ class CategoryModel(models.Model):
 class NewsModel(models.Model):
     category = models.ForeignKey(
         CategoryModel,  on_delete=models.CASCADE,
-        related_name='news'
+        related_name='news', verbose_name="Категория"
     )
 
     title = models.CharField("Заголовок", max_length=255)
 
     image = models.ImageField(
-        "Обложка",
+        "Загрузить обложку",
         upload_to='news/',
         storage=MediaStorage(),
+        null=True, blank=True
     )
 
-    content = CKEditor5Field("Содержание")
+    content = CKEditor5Field("Содержимое")
 
     is_published = models.BooleanField("Опубликовано", default=False)
     published_at = models.DateTimeField(

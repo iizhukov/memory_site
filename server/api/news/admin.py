@@ -8,7 +8,7 @@ from api.news import models
 
 @admin.register(models.GroupModel)
 class GroupModel(admin.ModelAdmin):
-    list_display = ('name', 'display_image', 'slug', 'created_at')
+    list_display = ('name', 'slug', 'created_at')
     list_filter = ('created_at',)
     search_fields = ('name', 'slug')
     prepopulated_fields = {'slug': ('name',)}
@@ -25,7 +25,7 @@ class GroupModel(admin.ModelAdmin):
 
     def display_image(self, obj):
         if obj.image:
-            return format_html('<img src="{}" width="50" height="50" />', obj.image.url)
+            return format_html('<img src="{}" height="200" />', obj.image.url)
         return "-"
  
     display_image.short_description = 'Изображение' # type: ignore
@@ -33,7 +33,7 @@ class GroupModel(admin.ModelAdmin):
 
 @admin.register(models.CategoryModel)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'group_link', 'short_description', 'slug', 'created_at')
+    list_display = ('name', 'group_link', 'slug', 'created_at')
     list_filter = ('group', 'created_at')
     search_fields = ('name', 'group__name', 'description')
     prepopulated_fields = {'slug': ('name',)}
@@ -63,14 +63,14 @@ class CategoryAdmin(admin.ModelAdmin):
 
     def display_image(self, obj):
         if obj.image:
-            return format_html('<img src="{}" width="50" height="50" />', obj.image.url)
+            return format_html('<img src="{}" height="200" />', obj.image.url)
         return "-"
  
     display_image.short_description = 'Изображение' # type: ignore
 
 
 class NewsAdminForm(forms.ModelForm):
-    content = forms.CharField(widget=CKEditor5Widget())
+    content = forms.CharField(label="Содержимое", widget=CKEditor5Widget())
     
     class Meta:
         model = models.NewsModel
@@ -86,13 +86,13 @@ class NewsAdmin(admin.ModelAdmin):
 
     search_fields = ('title', 'content', 'category__name')
 
-    readonly_fields = ('created_at', 'updated_at')
+    readonly_fields = ('created_at', 'updated_at', 'display_image')
     date_hierarchy = 'created_at'
     filter_horizontal = ()
     raw_id_fields = ('category',)
     fieldsets = (
         (None, {
-            'fields': ('title', 'content', 'category', 'is_published', 'source')
+            'fields': ('title', 'image', 'display_image', 'content', 'category', 'is_published', 'source')
         }),
         ('Даты', {
             'fields': ('created_at', 'updated_at', 'published_at'),
@@ -106,6 +106,13 @@ class NewsAdmin(admin.ModelAdmin):
 
     category_link.short_description = 'Категория' # type: ignore
     category_link.admin_order_field = 'category__name' # type: ignore
+
+    def display_image(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" height="200" />', obj.image.url)
+        return "-"
+ 
+    display_image.short_description = 'Обложка' # type: ignore
 
     def get_queryset(self, request):
         return super().get_queryset(request).select_related('category', 'category__group')

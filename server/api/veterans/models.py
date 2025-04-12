@@ -22,7 +22,7 @@ class VeteranModel(models.Model):
     )
 
     image = models.ImageField(
-        "Фото", upload_to="veterans/",
+        "Загрузить фото", upload_to="veterans/",
         storage=MediaStorage(),
         null=True, blank=True
     )

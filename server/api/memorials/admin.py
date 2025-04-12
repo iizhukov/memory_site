@@ -7,7 +7,7 @@ from api.memorials import models
 
 
 class MemorialAdminForm(forms.ModelForm):
-    description = forms.CharField(widget=CKEditor5Widget())
+    description = forms.CharField(label="Описание", widget=CKEditor5Widget())
 
     class Meta:
         model = models.MemorialModel

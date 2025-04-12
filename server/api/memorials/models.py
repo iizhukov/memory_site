@@ -26,8 +26,8 @@ class MemorialModel(models.Model):
     objects = models.Manager()
 
     class Meta:
-        verbose_name = "Памятник"
-        verbose_name_plural = "Памятники"
+        verbose_name = "Мемориал"
+        verbose_name_plural = "Мемориалы"
 
     def __str__(self) -> str:
         return str(self.name)
