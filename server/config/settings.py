@@ -195,8 +195,7 @@ STATIC_BUCKET_NAME = os.getenv('STATIC_BUCKET')
 CKEDITOR_5_FILE_STORAGE = 'api.storages.CKEditorStorage'
 
 STATICFILES_STORAGE = 'api.storages.StaticStorage'
-STATIC_URL = f'{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/static/'
-STATIC_ROOT = BASE_DIR / 'static_temp'
+STATIC_URL = f'static/'
 
 DEFAULT_FILE_STORAGE = 'api.storages.MediaStorage'
 MEDIA_URL = '/media/'
