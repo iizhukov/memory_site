@@ -39,6 +39,7 @@ INSTALLED_APPS = [
 
     'api.news',
     'api.veterans',
+    'api.memorials',
 ]
 
 MIDDLEWARE = [
