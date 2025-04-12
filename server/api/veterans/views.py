@@ -1,3 +1,4 @@
+import datetime
 from rest_framework import viewsets
 from drf_spectacular.utils import (
     extend_schema,
@@ -41,3 +42,10 @@ class VeteranViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.VeteranSerializer
     queryset = models.VeteranModel.objects.all()
 
+
+class BirthdayVeteransViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = serializers.VeteranSerializer
+
+    def get_queryset(self):
+        today = datetime.date.today()
+        return models.VeteranModel.objects.filter(birthday__day=today.day, birthday__month=today.month)

@@ -5,7 +5,8 @@ from . import views
 
 router = DefaultRouter()
 router.register(r'veterans', views.VeteranViewSet, basename='veteran')
-router.register(r'veterans/(?P<veteran_id>\d+)/notes', views.NoteViewSet, basename='note')
+router.register(r'birthday', views.BirthdayVeteransViewSet, basename='birthday')
+router.register(r'notes', views.NoteViewSet, basename='note')
 
 urlpatterns = [
     path('', include(router.urls)),
