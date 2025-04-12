@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'corsheaders',
 
     'api.news',
+    'api.veterans',
 ]
 
 MIDDLEWARE = [
@@ -123,7 +124,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -176,8 +176,6 @@ CKEDITOR_5_CONFIGS = {
 }
 
 CKEDITOR_5_UPLOAD_PATH = ''
-CKEDITOR_5_STORAGE_BACKEND = 'api.storage_backends.FixedUrlS3Storage'
-
 
 AWS_ACCESS_KEY_ID = os.getenv('MINIO_ACCESS_KEY')
 AWS_SECRET_ACCESS_KEY = os.getenv('MINIO_SECRET_KEY')
@@ -190,5 +188,16 @@ AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = 'public-read'
 AWS_QUERYSTRING_AUTH = False
 
-DEFAULT_FILE_STORAGE = 'api.storage_backends.FixedUrlS3Storage'
+NEWS_BUCKET_NAME = os.getenv('NEWS_BUCKET')
+VETERANS_BUCKET_NAME = os.getenv('VETERANS_BUCKET')
+STATIC_BUCKET_NAME = os.getenv('STATIC_BUCKET')
+
+CKEDITOR_5_FILE_STORAGE = 'api.storages.CKEditorStorage'
+
+STATICFILES_STORAGE = 'api.storages.StaticStorage'
+STATIC_URL = f'{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/static/'
+STATIC_ROOT = BASE_DIR / 'static_temp'
+
+DEFAULT_FILE_STORAGE = 'api.storages.MediaStorage'
+MEDIA_URL = '/media/'
 

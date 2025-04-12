@@ -33,7 +33,7 @@ services:
     environment:
       MINIO_ROOT_USER: admin123
       MINIO_ROOT_PASSWORD: admin123
-      MINIO_DEFAULT_BUCKETS: "news-media"
+      MINIO_DEFAULT_BUCKETS: "memory-site"
     ports:
       - "9000:9000"
       - "9001:9001"  # MinIO Console

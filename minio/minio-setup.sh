@@ -10,9 +10,9 @@ echo "Настройка клиента..."
 /usr/bin/mc alias set local http://localhost:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD} --api S3v4
 
 echo "Создание бакета..."
-/usr/bin/mc mb local/news-media || true  # игнорируем ошибку если бакет уже существует
+/usr/bin/mc mb local/memory-site || true  # игнорируем ошибку если бакет уже существует
 
 echo "Настройка прав доступа..."
-/usr/bin/mc policy set public local/news-media
+/usr/bin/mc policy set public local/memory-site
 
 echo "MinIO инициализирован"

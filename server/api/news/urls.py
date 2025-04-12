@@ -4,7 +4,7 @@ from . import views
 
 
 router = DefaultRouter()
-router.register(r'groups', views.CategoryGroupViewSet, basename='categorygroup')
+router.register(r'groups', views.GroupViewSet, basename='categorygroup')
 router.register(r'groups/(?P<group_id>\d+)/categories', views.CategoryViewSet, basename='category')
 router.register(r'news', views.NewsViewSet, basename='news')
 

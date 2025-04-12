@@ -5,16 +5,27 @@ from django.core.validators import MinLengthValidator
 from django.utils.text import slugify
 from django_ckeditor_5.fields import CKEditor5Field
 
+from api.storages import MediaStorage
+
 
 UserModel = get_user_model()
 
 
-class CategoryGroupModel(models.Model):
+class GroupModel(models.Model):
     name = models.CharField(
-        max_length=100, unique=True,
+        max_length=255, unique=True,
         validators=[MinLengthValidator(2)]
     )
-    image = models.ImageField(upload_to='category_groups/')
+    image = models.ImageField(
+        "Изображение",
+        upload_to='groups/',
+        storage=MediaStorage(),
+    )
+
+    description = models.TextField(
+        "Описание",
+        null=True, blank=True
+    )
 
     author = models.ForeignKey(
         UserModel,
@@ -43,16 +54,25 @@ class CategoryGroupModel(models.Model):
 
 class CategoryModel(models.Model):
     group = models.ForeignKey(
-        CategoryGroupModel, on_delete=models.CASCADE,
+        GroupModel, on_delete=models.CASCADE,
         related_name='categories'
     )
 
     name = models.CharField(
-        max_length=100,
+        max_length=255,
         validators=[MinLengthValidator(2)]
     )
 
-    description = CKEditor5Field("Описание")
+    image = models.ImageField(
+        "Изображение",
+        upload_to='categories/',
+        storage=MediaStorage(),
+    )
+
+    description = models.TextField(
+        "Описание",
+        null=True, blank=True
+    )
     
     author = models.ForeignKey(
         UserModel,
@@ -89,9 +109,20 @@ class NewsModel(models.Model):
     )
 
     title = models.CharField("Заголовок", max_length=255)
-    content = CKEditor5Field("Контент")
 
-    published_at = models.DateTimeField("Время публикации", default=timezone.now)
+    image = models.ImageField(
+        "Обложка",
+        upload_to='news/',
+        storage=MediaStorage(),
+    )
+
+    content = CKEditor5Field("Содержание")
+
+    is_published = models.BooleanField("Опубликовано", default=False)
+    published_at = models.DateTimeField(
+        "Время публикации",
+        null=True, blank=True
+    )
 
     source = models.CharField("Источник", max_length=100, blank=True, null=True)
     author = models.ForeignKey(
@@ -110,6 +141,12 @@ class NewsModel(models.Model):
         verbose_name = "Новость"
         verbose_name_plural = "Новости"
         ordering = ["-published_at"]
+
+    def save(self, *args, **kwargs):
+        if not self.published_at and self.is_published:
+            self.published_at = timezone.now()
+
+        super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return str(self.title)

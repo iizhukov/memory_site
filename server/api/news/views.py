@@ -12,9 +12,9 @@ from . import models
 from . import serializers
 
 
-class CategoryGroupViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = models.CategoryGroupModel.objects.all()
-    serializer_class = serializers.CategoryGroupSerializer
+class GroupViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = models.GroupModel.objects.all()
+    serializer_class = serializers.GroupSerializer
 
 
 @extend_schema_view(
@@ -57,7 +57,7 @@ class NewsViewSet(viewsets.ReadOnlyModelViewSet):
     pagination_class = StandardPagination
 
     def get_queryset(self):
-        queryset = models.NewsModel.objects.filter()
+        queryset = models.NewsModel.objects.filter(is_published=True)
         
         group_id = self.request.query_params.get('group_id')
         if group_id:

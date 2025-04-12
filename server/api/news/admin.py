@@ -6,8 +6,8 @@ from django_ckeditor_5.widgets import CKEditor5Widget
 from api.news import models
 
 
-@admin.register(models.CategoryGroupModel)
-class CategoryGroupAdmin(admin.ModelAdmin):
+@admin.register(models.GroupModel)
+class GroupModel(admin.ModelAdmin):
     list_display = ('name', 'display_image', 'slug', 'created_at')
     list_filter = ('created_at',)
     search_fields = ('name', 'slug')
@@ -15,7 +15,7 @@ class CategoryGroupAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at', 'display_image')
     fieldsets = (
         (None, {
-            'fields': ('name', 'slug', 'image', 'display_image')
+            'fields': ('name', 'slug', 'image', 'display_image', 'description')
         }),
         ('Дополнительно', {
             'fields': ('created_at',),
@@ -31,28 +31,17 @@ class CategoryGroupAdmin(admin.ModelAdmin):
     display_image.short_description = 'Изображение' # type: ignore
 
 
-
-class CategoryAdminForm(forms.ModelForm):
-    description = forms.CharField(widget=CKEditor5Widget())
-    
-    class Meta:
-        model = models.CategoryModel
-        fields = '__all__'
-
-
 @admin.register(models.CategoryModel)
 class CategoryAdmin(admin.ModelAdmin):
-    form = CategoryAdminForm
-
     list_display = ('name', 'group_link', 'short_description', 'slug', 'created_at')
     list_filter = ('group', 'created_at')
     search_fields = ('name', 'group__name', 'description')
     prepopulated_fields = {'slug': ('name',)}
-    readonly_fields = ('created_at',)
+    readonly_fields = ('created_at', 'display_image')
     raw_id_fields = ('group',)
     fieldsets = (
         (None, {
-            'fields': ('group', 'name', 'slug', 'description')
+            'fields': ('group', 'name', 'slug', 'image', 'display_image', 'description')
         }),
         ('Дополнительно', {
             'fields': ('created_at',),
@@ -72,6 +61,13 @@ class CategoryAdmin(admin.ModelAdmin):
 
     short_description.short_description = 'Описание' # type: ignore
 
+    def display_image(self, obj):
+        if obj.image:
+            return format_html('<img src="{}" width="50" height="50" />', obj.image.url)
+        return "-"
+ 
+    display_image.short_description = 'Изображение' # type: ignore
+
 
 class NewsAdminForm(forms.ModelForm):
     content = forms.CharField(widget=CKEditor5Widget())
@@ -85,7 +81,7 @@ class NewsAdminForm(forms.ModelForm):
 class NewsAdmin(admin.ModelAdmin):
     form = NewsAdminForm
 
-    list_display = ('title', 'category_link', 'published_at', 'source', 'author')
+    list_display = ('title', 'category_link', 'author')
     list_filter = ('category__group', 'category', 'published_at', 'source', 'created_at')
 
     search_fields = ('title', 'content', 'category__name')
@@ -96,16 +92,16 @@ class NewsAdmin(admin.ModelAdmin):
     raw_id_fields = ('category',)
     fieldsets = (
         (None, {
-            'fields': ('title', 'content', 'category')
+            'fields': ('title', 'content', 'category', 'is_published', 'source')
         }),
         ('Даты', {
-            'fields': ('created_at', 'updated_at'),
+            'fields': ('created_at', 'updated_at', 'published_at'),
             'classes': ('collapse',)
         }),
     )
 
     def category_link(self, obj):
-        url = f"/admin/yourapp/category/{obj.category.id}/change/"
+        url = f"/admin/news/category/{obj.category.id}/change/"
         return format_html('<a href="{}">{}</a>', url, obj.category.name)
 
     category_link.short_description = 'Категория' # type: ignore
