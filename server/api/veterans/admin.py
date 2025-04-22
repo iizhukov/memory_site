@@ -36,8 +36,11 @@ class NoteAdmin(admin.ModelAdmin):
     )
 
     def veteran_link(self, obj):
-        url = f"/admin/veterans/veteranmodel/{obj.veteran.id}/change/"
-        return format_html('<a href="{}">{}</a>', url, obj.veteran)
+        if hasattr(obj, "veteran"):
+            url = f"/admin/veterans/veteranmodel/{obj.veteran.id}/change/"
+            return format_html('<a href="{}">{}</a>', url, obj.veteran)
+        
+        return format_html('Ветеран не указан')
 
     veteran_link.short_description = 'Ветеран' # type: ignore
     veteran_link.admin_order_field = 'veteran__name' # type: ignore
