@@ -36,7 +36,7 @@ class NoteAdmin(admin.ModelAdmin):
     )
 
     def veteran_link(self, obj):
-        if hasattr(obj, "veteran"):
+        if hasattr(obj, "veteran") and getattr(obj, 'veteran') is not None:
             url = f"/admin/veterans/veteranmodel/{obj.veteran.id}/change/"
             return format_html('<a href="{}">{}</a>', url, obj.veteran)
         
