@@ -21,7 +21,8 @@ class PhotoInline(admin.TabularInline):
 
     def image_preview(self, obj):
         return format_html('<img src="{}" height="150" />', obj.image.url) if obj.image else None
-    image_preview.short_description = 'Изображение'
+
+    image_preview.short_description = 'Изображение'  # type: ignore
 
 
 @admin.register(models.MemorialModel)

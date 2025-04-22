@@ -7,7 +7,7 @@ from drf_spectacular.utils import (
 )
 from drf_spectacular.types import OpenApiTypes
 
-from api.pagination import StandardPagination
+from api.pagination import StandartPagination
 
 from . import models
 from . import serializers
@@ -26,7 +26,7 @@ from . import serializers
 )
 class NoteViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.NoteSerializer
-    pagination_class = StandardPagination
+    pagination_class = StandartPagination
 
     def get_queryset(self):
         queryset = models.NoteModel.objects.filter()

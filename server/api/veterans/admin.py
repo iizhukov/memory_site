@@ -18,7 +18,7 @@ class NoteAdminForm(forms.ModelForm):
 class NoteAdmin(admin.ModelAdmin):
     form = NoteAdminForm
 
-    list_display = ('veteran_link', 'created_at')
+    list_display = ('veteran_link', 'created_at', 'edit')
     list_filter = ('created_at',)
     search_fields = ('veteran__name', 'text')
     readonly_fields = ('created_at', 'updated_at')
@@ -39,8 +39,14 @@ class NoteAdmin(admin.ModelAdmin):
         url = f"/admin/veterans/veteranmodel/{obj.veteran.id}/change/"
         return format_html('<a href="{}">{}</a>', url, obj.veteran)
 
-    veteran_link.short_description = 'Ветеран'
-    veteran_link.admin_order_field = 'veteran__name'
+    veteran_link.short_description = 'Ветеран' # type: ignore
+    veteran_link.admin_order_field = 'veteran__name' # type: ignore
+
+    def edit(self, obj):
+        url = f"/admin/veterans/notemodel/{obj.pk}/change/"
+        return format_html('<a href="{}">{}</a>', url, "Редактировать")
+
+    edit.short_description = "Редактировать" # type: ignore
 
 
 class VeteranAdminForm(forms.ModelForm):

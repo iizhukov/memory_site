@@ -30,6 +30,12 @@ class GroupModel(admin.ModelAdmin):
  
     display_image.short_description = 'Изображение' # type: ignore
 
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.author = request.user
+
+        obj.save()
+
 
 @admin.register(models.CategoryModel)
 class CategoryAdmin(admin.ModelAdmin):
@@ -67,6 +73,12 @@ class CategoryAdmin(admin.ModelAdmin):
         return "-"
  
     display_image.short_description = 'Изображение' # type: ignore
+
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.author = request.user
+
+        obj.save()
 
 
 class NewsAdminForm(forms.ModelForm):
@@ -116,4 +128,9 @@ class NewsAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         return super().get_queryset(request).select_related('category', 'category__group')
+    
+    def save_model(self, request, obj, form, change):
+        if not change:
+            obj.author = request.user
 
+        obj.save()
