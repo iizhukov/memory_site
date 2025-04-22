@@ -38,9 +38,29 @@ class NoteViewSet(viewsets.ReadOnlyModelViewSet):
         return queryset.order_by('-created_at')
 
 
+@extend_schema_view(
+    list=extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name='is_vov_veteran',
+                type=OpenApiTypes.BOOL,
+                location=OpenApiParameter.QUERY,
+            )
+        ],
+    )
+)
 class VeteranViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.VeteranSerializer
-    queryset = models.VeteranModel.objects.all()
+    pagination_class = StandartPagination
+
+    def get_queryset(self):
+        queryset = models.VeteranModel.objects.all()
+        
+        is_vov_veteran = self.request.query_params.get('is_vov_veteran')
+        if is_vov_veteran is not None:
+            queryset = queryset.filter(is_vov_veteran=is_vov_veteran.lower() == 'true')
+
+        return queryset
 
 
 class BirthdayVeteransViewSet(viewsets.ReadOnlyModelViewSet):

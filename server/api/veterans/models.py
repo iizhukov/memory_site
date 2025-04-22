@@ -27,6 +27,11 @@ class VeteranModel(models.Model):
         null=True, blank=True
     )
 
+    is_vov_veteran = models.BooleanField(
+        "Ветеран Великой Отечественной войны",
+        default=False
+    )
+
     created_at = models.DateTimeField("Дата создания", auto_now_add=True)
     updated_at = models.DateTimeField("Дата обновления", auto_now=True)
 

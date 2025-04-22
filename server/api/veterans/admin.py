@@ -72,7 +72,7 @@ class VeteranAdmin(admin.ModelAdmin):
     filter_horizontal = ()
     fieldsets = (
         (None, {
-            'fields': ('name', 'surname', 'patronymic', 'birthday', 'image', 'display_image')
+            'fields': ('name', 'surname', 'patronymic', 'birthday', 'image', 'display_image', 'is_vov_veteran')
         }),
         ('Даты', {
             'fields': ('created_at',),
