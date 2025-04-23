@@ -19,6 +19,7 @@ from django.conf import settings
 from django.urls import path, include
 from django.conf.urls.static import static
 from django_ckeditor_5 import views as ckeditor5_views
+from debug_toolbar.toolbar import debug_toolbar_urls
 
 
 admin.site.site_header = 'Администрирование Сайта Ветеранов'
@@ -35,4 +36,5 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += debug_toolbar_urls()
 

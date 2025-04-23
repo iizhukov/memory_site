@@ -45,7 +45,12 @@ class NoteViewSet(viewsets.ReadOnlyModelViewSet):
                 name='is_vov_veteran',
                 type=OpenApiTypes.BOOL,
                 location=OpenApiParameter.QUERY,
-            )
+            ),
+            OpenApiParameter(
+                name='search',
+                type=OpenApiTypes.STR,
+                location=OpenApiParameter.QUERY,
+            ),
         ],
     )
 )
@@ -59,6 +64,10 @@ class VeteranViewSet(viewsets.ReadOnlyModelViewSet):
         is_vov_veteran = self.request.query_params.get('is_vov_veteran')
         if is_vov_veteran is not None:
             queryset = queryset.filter(is_vov_veteran=is_vov_veteran.lower() == 'true')
+
+        search = self.request.query_params.get('search')
+        if search is not None:
+            queryset = queryset.filter(full_name__icontains=search)
 
         return queryset
 

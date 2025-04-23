@@ -20,6 +20,10 @@ DEBUG = os.getenv("DEBUG") == "True"
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
 
 # Application definition
 
@@ -37,12 +41,15 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'corsheaders',
 
+    'debug_toolbar',
+
     'api.news',
     'api.veterans',
     'api.memorials',
 ]
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -201,3 +208,7 @@ STATIC_URL = f'static/'
 DEFAULT_FILE_STORAGE = 'api.storages.MediaStorage'
 MEDIA_URL = '/media/'
 
+
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': lambda request: (not request.path.startswith('/api/docs')) and (not request.path.startswith("/admin/")),
+}

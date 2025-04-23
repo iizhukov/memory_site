@@ -15,6 +15,10 @@ class VeteranModel(models.Model):
         "Отчество", max_length=100,
         null=True, blank=True
     )
+    full_name = models.CharField(
+        "Полное имя", max_length=300,
+        blank=True, db_index=True
+    )
 
     birthday = models.DateField(
         "День рождения",
@@ -38,6 +42,12 @@ class VeteranModel(models.Model):
     class Meta:
         verbose_name = "Ветеран"
         verbose_name_plural = "Ветераны"
+
+    def save(self, *args, **kwargs):
+        self.full_name = f"{self.name} {self.surname} {self.patronymic}"
+
+        super().save(*args, **kwargs)
+
 
     def __str__(self) -> str:
         return f"{self.name} {self.surname} {self.patronymic}"
