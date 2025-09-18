@@ -31,10 +31,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
 
-    path('ckeditor5/upload/', ckeditor5_views.upload_file, name='ck_editor_5_upload_file'),
+    path('ckeditor/upload/', ckeditor5_views.upload_file, name='ck_editor_5_upload_file'),
 ]
 
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += debug_toolbar_urls()
 

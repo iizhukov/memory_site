@@ -4,12 +4,27 @@ services:
     container_name: nginx
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl:/etc/nginx/ssl:ro
     depends_on:
       - server
-      - minio
+      - client
     restart: always
+
+  client:
+    container_name: client
+    hostname: client
+    restart: always
+    build:
+      context: ./client
+    ports:
+      - "4321:4321"
+    expose:
+      - 4321
+    depends_on:
+      - server
 
   server:
     container_name: server
@@ -53,6 +68,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+
 
 volumes:
   minio_data:

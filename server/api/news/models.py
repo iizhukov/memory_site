@@ -5,7 +5,7 @@ from django.core.validators import MinLengthValidator
 from django.utils.text import slugify
 from django_ckeditor_5.fields import CKEditor5Field
 
-from api.storages import MediaStorage
+from api.storages import MediaStorage, FileStorage
 
 
 UserModel = get_user_model()
@@ -138,6 +138,13 @@ class NewsModel(models.Model):
 
     created_at = models.DateTimeField("Дата создания", auto_now_add=True)
     updated_at = models.DateTimeField("Дата обновления", auto_now=True)
+
+    file = models.FileField(
+        "Загрузить файл (pdf)",
+        upload_to='news/',
+        storage=FileStorage(),
+        null=True, blank=True
+    )
 
     objects = models.Manager()
 

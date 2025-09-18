@@ -104,7 +104,7 @@ class NewsAdmin(admin.ModelAdmin):
     raw_id_fields = ('category',)
     fieldsets = (
         (None, {
-            'fields': ('title', 'image', 'display_image', 'content', 'category', 'is_published', 'source')
+            'fields': ('title', 'image', 'display_image', 'content', 'file', 'category', 'is_published', 'source')
         }),
         ('Даты', {
             'fields': ('created_at', 'updated_at', 'published_at'),

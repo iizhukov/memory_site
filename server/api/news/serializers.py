@@ -25,6 +25,6 @@ class NewsSerializer(serializers.ModelSerializer):
         model = models.NewsModel
         fields = (
             'id', 'category', 'title', 'content', 'published_at', 
-            'source', 'created_at', 'updated_at', 'image',
+            'source', 'created_at', 'updated_at', 'image', 'file',
         )
         read_only_fields = ('created_at', 'updated_at', 'published_at')

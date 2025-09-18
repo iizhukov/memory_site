@@ -35,5 +35,9 @@ class MediaStorage(FixedUrlS3Storage):
     location = 'media'
 
 
+class FileStorage(FixedUrlS3Storage):
+    location = 'files'
+
+
 class CKEditorStorage(FixedUrlS3Storage):
     location = 'ckeditor'

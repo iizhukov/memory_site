@@ -1,6 +1,7 @@
+import os
+
 from pathlib import Path
 from dotenv import load_dotenv
-import os
 
 
 load_dotenv()
@@ -41,7 +42,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'corsheaders',
 
-    'debug_toolbar',
+    'debug_toolbar' if DEBUG  else "",
 
     'api.news',
     'api.veterans',
@@ -149,7 +150,12 @@ REST_FRAMEWORK = {
 }
 
 
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://veteranprocnso.ru",
+    "https://www.veteranprocnso.ru",
+]
 
 
 SPECTACULAR_SETTINGS = {
@@ -191,6 +197,7 @@ AWS_STORAGE_BUCKET_NAME = os.getenv('MINIO_BUCKET')
 AWS_S3_ENDPOINT_URL = os.getenv('MINIO_ENDPOINT')
 AWS_S3_CUSTOM_DOMAIN = os.getenv('MINIO_CUSTOM_DOMAIN')
 AWS_S3_ADDRESSING_STYLE = 'path'
+AWS_S3_USE_SSL = True
 
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = 'public-read'
@@ -211,4 +218,9 @@ MEDIA_URL = '/media/'
 
 DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': lambda request: (not request.path.startswith('/api/docs')) and (not request.path.startswith("/admin/")),
+}
+
+SERVER_CONFIG = {
+    "IP": os.getenv("SERVER_IP"),
+    "DOMAIN": os.getenv("SERVER_DOMAIN")
 }
